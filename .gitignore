@@ -1,0 +1,58 @@
+# --- General ---
+.DS_Store
+*.log
+*.env
+.env
+.env.*
+.env*.local
+
+# --- Python / FastAPI ---
+backend-fastapi/venv/
+backend-fastapi/__pycache__/
+backend-fastapi/app/__pycache__/
+backend-fastapi/*.pyc
+backend-fastapi/app/*.pyc
+backend-fastapi/.pytest_cache/
+backend-fastapi/.mypy_cache/
+backend-fastapi/.ruff_cache/
+
+# --- Node.js / Next.js ---
+frontend-nextjs/node_modules/
+frontend-nextjs/.next/
+frontend-nextjs/out/
+frontend-nextjs/build/
+frontend-nextjs/npm-debug.log*
+frontend-nextjs/yarn-debug.log*
+frontend-nextjs/yarn-error.log*
+frontend-nextjs/pnpm-debug.log*
+
+# dependencies
+
+frontend-nextjs/.pnp
+frontend-nextjs/.pnp.*
+frontend-nextjs/.yarn/*
+frontend-nextjs/!.yarn/patches
+frontend-nextjs/!.yarn/plugins
+frontend-nextjs/!.yarn/releases
+frontend-nextjs/!.yarn/versions
+
+# testing
+/coverage
+
+# misc
+frontend-nextjs/*.pem
+
+# env files (can opt-in for committing if needed)
+frontend-nextjs/.env*
+
+# vercel
+frontend-nextjs/.vercel
+
+# typescript
+frontend-nextjs/*.tsbuildinfo
+frontend-nextjs/next-env.d.ts
+
+
+# --- IDEs ---
+.idea/
+.vscode/
