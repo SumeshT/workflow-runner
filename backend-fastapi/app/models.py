@@ -54,7 +54,6 @@ class CreateWorkflowResponse(BaseModel):
 
 class RunWorkflowRequest(BaseModel):
     input: str
-    forceLLMTimeout: bool = False
 
 class LogEntry(BaseModel):
     timestamp: datetime = Field(default_factory=datetime.utcnow)

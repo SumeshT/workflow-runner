@@ -18,7 +18,6 @@ def _create_log(node_id: str, status, message: str, **kwargs) -> LogEntry:
 async def _call_llm(prompt: str) -> str:
     """
     Calls the Google Gemini API.
-    The `force_timeout` parameter is now ignored, as we are making a real call.
     """
     print(f"[LLM Gemini] Calling API with prompt: '{prompt[:50]}...'")
 
@@ -67,7 +66,7 @@ async def _call_llm(prompt: str) -> str:
             raise Exception(f"Failed to parse Gemini API response: {e}")
 
 
-async def run_workflow(spec: WorkflowSpec, input_text: str, force_llm_timeout: bool) -> AsyncGenerator[StreamEvent, None]:
+async def run_workflow(spec: WorkflowSpec, input_text: str) -> AsyncGenerator[StreamEvent, None]:
     # Step 1: PromptNode
     prompt_node = spec.nodes[0]
     yield _create_log(prompt_node.id, "running", "Generating prompt...")

@@ -32,7 +32,6 @@ async def run_workflow_endpoint(workflow_id: str, run_request: models.RunWorkflo
             async for event in engine.run_workflow(
                 spec=workflow_spec,
                 input_text=run_request.input,
-                force_llm_timeout=run_request.forceLLMTimeout,
             ):
                 if await http_request.is_disconnected():
                     print(f"Client for workflow {workflow_id} disconnected.")

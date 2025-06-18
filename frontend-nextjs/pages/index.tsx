@@ -29,7 +29,6 @@ export default function HomePage() {
   const [inputText, setInputText] = useState<string>('Hello, world!');
   const [logs, setLogs] = useState<Array<LogEntry | { type: 'status'; message: string }>>([]);
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const [forceTimeout, setForceTimeout] = useState<boolean>(false);
 
   useEffect(() => {
     try {
@@ -64,7 +63,7 @@ export default function HomePage() {
       const runResponse = await fetch(`${API_BASE_URL}/api/workflows/${id}/run`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ input: inputText, forceLLMTimeout: forceTimeout }),
+        body: JSON.stringify({ input: inputText }),
       });
       if (!runResponse.body) throw new Error('Streaming response not available.');
       
@@ -93,7 +92,7 @@ export default function HomePage() {
     } finally {
       setIsRunning(false);
     }
-  }, [jsonText, inputText, isJsonValid, forceTimeout]);
+  }, [jsonText, inputText, isJsonValid]);
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 font-sans p-4 sm:p-8">
@@ -110,10 +109,6 @@ export default function HomePage() {
               <button onClick={handleRunWorkflow} disabled={!isJsonValid || isRunning} className="px-6 py-2 bg-cyan-600 text-white font-semibold rounded-md hover:bg-cyan-500 disabled:bg-gray-600">
                 {isRunning ? 'Running...' : 'Run Workflow'}
               </button>
-              <div className="flex items-center">
-                <input type="checkbox" id="force-timeout" checked={forceTimeout} onChange={(e) => setForceTimeout(e.target.checked)} className="h-4 w-4 rounded border-gray-500 bg-gray-700 text-cyan-600"/>
-                <label htmlFor="force-timeout" className="ml-2 text-sm text-gray-300">Force LLM Timeout</label>
-              </div>
             </div>
           </div>
           <div>
