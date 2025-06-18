@@ -38,7 +38,6 @@ class WorkflowSpec(BaseModel):
     # Now, the list simply contains the already-discriminated WorkflowNode type.
     nodes: conlist(WorkflowNode, min_length=2, max_length=2)
 
-    # Updated validator using the V2 pattern
     @model_validator(mode='after')
     def check_node_order(self):
         nodes = self.nodes

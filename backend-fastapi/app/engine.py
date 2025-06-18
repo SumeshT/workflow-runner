@@ -4,6 +4,9 @@ import httpx
 from typing import AsyncGenerator
 from .models import WorkflowSpec, LogEntry, WorkflowStatusEvent, StreamEvent
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 MAX_RETRIES = 1
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -12,7 +15,6 @@ GEMINI_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemin
 def _create_log(node_id: str, status, message: str, **kwargs) -> LogEntry:
     return LogEntry(nodeId=node_id, status=status, message=message, **kwargs)
 
-# --- THIS IS THE MAIN CHANGE ---
 async def _call_llm(prompt: str) -> str:
     """
     Calls the Google Gemini API.
@@ -65,9 +67,6 @@ async def _call_llm(prompt: str) -> str:
             raise Exception(f"Failed to parse Gemini API response: {e}")
 
 
-# The run_workflow function remains EXACTLY THE SAME.
-# This is the beauty of good abstraction! We only had to change the
-# implementation of _call_llm, not the main orchestration logic.
 async def run_workflow(spec: WorkflowSpec, input_text: str, force_llm_timeout: bool) -> AsyncGenerator[StreamEvent, None]:
     # Step 1: PromptNode
     prompt_node = spec.nodes[0]
@@ -86,8 +85,6 @@ async def run_workflow(spec: WorkflowSpec, input_text: str, force_llm_timeout: b
     for attempt in range(MAX_RETRIES + 1):
         yield _create_log(llm_node.id, "running", f"Calling Gemini API (Attempt {attempt + 1}/{MAX_RETRIES + 1})...")
         try:
-            # NOTE: We no longer use `force_llm_timeout` here. The real call can fail on its own.
-            # You could add logic here to force a failure for testing if needed.
             current_output = await _call_llm(current_output)
             yield _create_log(llm_node.id, "success", "Gemini API call successful.", output=current_output)
             success = True
